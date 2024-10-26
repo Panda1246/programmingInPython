@@ -20,7 +20,7 @@ def distance(point, center):
     for i in range(len(point)):
         point_x = normalize(point[i], i)
         center_x = normalize(center[i], i)
-        temp += (point_x - center_x)**2
+        temp += (point_x - center_x) ** 2
     return math.sqrt(temp)
 
 
@@ -47,7 +47,7 @@ def assign_clusters(centers):
             dists.append(distance(point, center))
         min_dist = min(dists)
         labels.append(dists.index(min_dist))
-        wcss += min_dist**2
+        wcss += min_dist ** 2
     return labels, wcss
 
 
@@ -55,7 +55,7 @@ def update_centers(centers, labels):
     for c in range(len(centers)):
         cluster = []
         l = 0
-        for point in  data:
+        for point in data:
             if labels[l] == c:
                 cluster.append(point)
             l += 1
