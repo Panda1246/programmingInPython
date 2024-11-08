@@ -19,7 +19,7 @@ while len(sheep_list) != 0 and round_number<=50:
         sheep.move()
 
     sheeps_alive = wolf.move(sheep_list, sheeps_alive)
-    #print(f"Round {round_number}, wolf position ({round(wolf.position_x,3)}, {round(wolf.position_y,3)}), alive sheeps: {sheeps_alive}")
+    print(f"Round {round_number}, wolf position ({round(wolf.position_x,3)}, {round(wolf.position_y,3)}), alive sheeps: {sheeps_alive}")
     to_json={
         "round_no":round_number,
         "wolf_pos":[round(wolf.position_x,3),round(wolf.position_y,3)],
