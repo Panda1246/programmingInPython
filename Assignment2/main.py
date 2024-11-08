@@ -1,7 +1,7 @@
 import sheep
 import wolf
 sheep_list=[]
-for i in range(1, 2):
+for i in range(1, 6):
     sheep_list.append(sheep.Sheep(10.0, 0.5, i))
 wolf = wolf.Wolf(10.0, 1.0)
 

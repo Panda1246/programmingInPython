@@ -24,8 +24,8 @@ class Wolf(Animal):
             sheep_list.remove(closest_sheep)
         else:
             scale = self.move_dist / distance_to_closest_sheep
-            self.position_x += scale * closest_sheep.position_x
-            self.position_y += scale * closest_sheep.position_y
+            self.position_x += scale * (closest_sheep.position_x- self.position_x)
+            self.position_y += scale * (closest_sheep.position_y - self.position_y)
             print(f"Wolf is chasing Sheep {closest_sheep.sheep_id} distance {distance_to_closest_sheep}")
 
     def log(self):
