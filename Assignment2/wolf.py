@@ -1,17 +1,17 @@
-from animal import Animal
+from Assignment2.animal import Animal
 
 
 class Wolf(Animal):
-    def __init__(self, init_pos_limit, move_dist):
+    def __init__(self, move_dist):
         self.position_x = 0.0
         self.position_y = 0.0
-        super().__init__(init_pos_limit, move_dist)
+        super().__init__(move_dist)
 
     def find_closest_sheep(self, sheep_list):
         distance_to_sheep = []
         for sheep in sheep_list:
             if sheep.position_x is None:
-                distance_to_sheep.append(100000000000000.0)
+                distance_to_sheep.append(10**100)
             else:
                 distance_to_sheep.append(
                     ((self.position_x - sheep.position_x) ** 2) + ((self.position_y - sheep.position_y) ** 2))

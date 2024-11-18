@@ -1,4 +1,3 @@
 class Animal(object):
-    def __init__(self, init_pos_limit, move_dist):
-        self.init_pos_limit = init_pos_limit
+    def __init__(self, move_dist):
         self.move_dist = move_dist
