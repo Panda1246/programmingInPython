@@ -1,4 +1,4 @@
-from Assignment2.animal import Animal
+from animal import Animal
 import logging
 
 
