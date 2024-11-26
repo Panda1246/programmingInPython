@@ -12,7 +12,7 @@ class Wolf(Animal):
         distance_to_sheep = []
         for sheep in sheep_list:
             if sheep.position_x is None:
-                distance_to_sheep.append(10 ** 100)
+                distance_to_sheep.append(float('inf'))
             else:
                 distance_to_sheep.append(
                     ((self.position_x - sheep.position_x) ** 2) + ((self.position_y - sheep.position_y) ** 2))
@@ -40,4 +40,3 @@ class Wolf(Animal):
             logging.info(f"Wolf is chasing sheep {closest_sheep.sheep_id}")
         logging.debug(f"Wolf moved to x:{self.position_x}, y:{self.position_y}")
         return sheeps_alive
-

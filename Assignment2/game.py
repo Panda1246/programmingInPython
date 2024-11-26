@@ -5,7 +5,7 @@ from sheep import Sheep
 import logging
 
 
-class Game(object):
+class Game:
     def __init__(self, sheep_alive=15, max_number_rounds=50, move_dist_sheep=0.5,
                  move_dist_wolf=1.0, init_pos_limit=10.0):
         self.sheep_alive = sheep_alive
@@ -32,12 +32,14 @@ class Game(object):
             self.sheep_alive = wolf.move(sheep_list, self.sheep_alive)
             logging.info("Wolf has moved")
             print(
-                f"Round {round_number}, wolf position ({round(wolf.position_x, 3)}, {round(wolf.position_y, 3)}), alive sheeps: {self.sheep_alive}")
+                f"Round {round_number}, wolf position ({round(wolf.position_x, 3)}, {round(wolf.position_y, 3)}), sheep"
+                f"s alive: {self.sheep_alive}")
             to_json = {
                 "round_no": round_number,
                 "wolf_pos": [round(wolf.position_x, 3), round(wolf.position_y, 3)],
                 "sheep_pos": ([
-                    f"Sheep - id:{sheep.sheep_id} position ({'null' if sheep.position_x is None else sheep.position_x}, {'null' if sheep.position_y is None else sheep.position_y})"
+                    f"Sheep - id:{sheep.sheep_id} position ({'null' if sheep.position_x is None else sheep.position_x},"
+                    f"{'null' if sheep.position_y is None else sheep.position_y})"
                     for sheep in sheep_list])
             }
             file_json.write(json.dumps(to_json, indent=3))
