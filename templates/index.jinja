@@ -45,17 +45,17 @@
             </tr>
             {% for row in rows %}
             <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>{{ row[5] }}</td>
-                <td>{{ row[6] }}</td>
-                <td>{{ row[7] }}</td>
-                <td>{{ row[8] }}</td>
-                <td>{{ row[9] }}</td>
-                <td><a href="delete/{{ row[0] }}">Delete</a></td>
+                <td>{{ row.id }}</td>
+                <td>{{ row.sex }}</td>
+                <td>{{ row.length }}</td>
+                <td>{{ row.diameter }}</td>
+                <td>{{ row.height }}</td>
+                <td>{{ row.whole_weight }}</td>
+                <td>{{ row.shucked_weight }}</td>
+                <td>{{ row.viscera_weight }}</td>
+                <td>{{ row.shell_weight }}</td>
+                <td>{{ row.rings }}</td>
+                <td><a href="delete/{{ row.id }}">Delete</a></td>
             </tr>
             {%endfor%}
 
