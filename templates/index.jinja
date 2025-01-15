@@ -27,8 +27,14 @@
     </style>
 </head>
 <body>
-    <div><h1><a href="add">Add record</a></h1></div>
-    <div><h1>All data</h1><br>
+    <div>
+        <h1>
+            <a href="add">Add record</a>
+        </h1>
+    </div>
+    <div>
+        <h1>All data</h1>
+        <br>
         <table>
             <tr>
                 <th>Id</th>
@@ -38,6 +44,7 @@
                 <th>Rings</th>
                 <th>Action</th>
             </tr>
+            
             {% for row in rows %}
             <tr>
                 <td>{{ row.id }}</td>

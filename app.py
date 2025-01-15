@@ -1,24 +1,27 @@
 from flask import Flask, render_template, request, redirect,  abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+from model import Abalone
+
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///snails.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///snails.db' 
 db = SQLAlchemy(app)
 ATTRIBUTES = ['sex', 'length', 'diameter', 'rings']
 
 
 class Abalone(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sex = db.Column(db.String(1))
-    length = db.Column(db.Float)
-    diameter = db.Column(db.Float)
-    rings = db.Column(db.Integer)
+    id = db.mapped_column(db.Integer, primary_key=True)
+    sex = db.mapped_column(db.String(1), nullable=False)
+    length = db.mapped_column(db.Float, nullable=False)
+    diameter = db.mapped_column(db.Float, nullable=False)
+    rings = db.mapped_column(db.Integer, nullable=False)
+
 
 def validate_abalon(sex, length, diameter, rings):
-    if sex not in ['M', 'F', 'I'] and float(length) < 0 and float(diameter) < 0 and float(rings) < 0:
+    if sex not in ['M', 'F', 'I'] or float(length) < 0 or float(diameter) < 0 or float(rings) < 0:
         return False
     return True
-
 
 
 with app.app_context():
@@ -47,10 +50,12 @@ def add():
                     abort(400)
 
             atributes[i] = value_of_arg
+
         if not validate_abalon(**atributes):
             abort(400)
         else:
-            abalone = Abalone(sex=request.form['sex'], length=request.form['length'], diameter=request.form['diameter'], rings=request.form['rings'])
+            abalone = Abalone(sex=request.form['sex'], length=request.form['length'], 
+                              diameter=request.form['diameter'], rings=request.form['rings'])
             try:
                 db.session.add(abalone)
                 db.session.commit()
@@ -59,6 +64,8 @@ def add():
                 abort(500)
     else:
         return render_template('add.jinja')
+    
+
 @app.route('/delete/<int:id>')
 def delete(id):
     try:
@@ -67,6 +74,7 @@ def delete(id):
         return redirect('/')
     except Exception as e:
         return abort(404)
+
 
 @app.route('/api/data', methods=['GET'])
 def get_all_data():
@@ -83,49 +91,55 @@ def get_all_data():
         })
     return jsonify(result_json)
 
+
 @app.route('/api/data', methods=['POST'])
 def add_new_data():
-    form = request.json
-    sex = form['sex']
-    length = form['length']
-    diameter = form['diameter']
-    rings = form['rings']
-    if validate_abalon(sex, length, diameter, rings):
-        abalon = Abalone(sex, length, diameter, rings)
-        db.session.add(abalon)
-        db.session.commit()
-        response = {
-            'messege': 'Record added',
-            'id': abalon.id
-        }
-        return jsonify(response)
-    else:
-        return jsonify({'messege': 'Invalid data'}), 400
+    try:
+        form = request.json
+        sex = form['sex']
+        length = form['length']
+        diameter = form['diameter']
+        rings = form['rings']
+        if validate_abalon(sex, length, diameter, rings):
+            abalon = Abalone(sex=sex, length=length, diameter=diameter, rings=rings)
+            db.session.add(abalon)
+            db.session.commit()
+            response = {
+                'messege': 'Record added',
+                'id': abalon.id
+            }
+            return jsonify(response)
+        else:
+            return jsonify({'message': 'Invalid data was provided'}), 400
+    except Exception as e:
+        return jsonify({'messege': ''}), 400
+
 
 @app.route('/api/data/<int:id>', methods=['DELETE'])
-def delete_data(record_id):
-    abalone = Abalone.query.get(record_id)
+def delete_data(id):
+    abalone = Abalone.query.get(id)
     if abalone:
         db.session.delete(abalone)
         db.session.commit()
-        return jsonify({'messege': 'Record deleted'})
+        return jsonify({'messege': 'Record deleted', 'record_id': id})
     else:
         return jsonify({'messege': 'Record not found'}), 404
-
-
-
 
 
 @app.errorhandler(400)
 def bad_request(error):
     return render_template('400.jinja'), 400
+
+
 @app.errorhandler(404)
 def bad_request(error):
     return render_template('404.jinja'), 404
+
+
 @app.errorhandler(500)
 def internal_error(error):
     return render_template('500.jinja'), 500
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

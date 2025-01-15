@@ -8,6 +8,8 @@
 /dataSources.local.xml
 
 .venv/
+venv/
+
 
 *.pyc
 __pycache__/
@@ -21,3 +23,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+.idea/
