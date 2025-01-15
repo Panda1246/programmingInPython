@@ -35,11 +35,11 @@
 <body>
     <div><h1>Add record</h1></div>
     <form action="add" method="post">
-        <table>
+        <table> 
             <tr><td>Sex</td><td><input type="text" id="sex", name="sex", placeholder="F - female; M - male; I - infant"></td></tr>
-            <tr><td>Length</td><td><input type="text" id="length", name="length"></td></tr>
-            <tr><td>Diameter</td><td><input type="text" id="diameter", name="diameter"></td></tr>
-            <tr><td>Rings</td><td><input type="text" id="rings", name="rings"></td></tr>
+            <tr><td>Length</td><td><input type="number" step="0.01" id="length", name="length"></td></tr>
+            <tr><td>Diameter</td><td><input type="number" step="0.01" id="diameter", name="diameter"></td></tr>
+            <tr><td>Rings</td><td><input type="number" id="rings" name="rings"></td></tr>
         </table>
         <input type="submit" value="Add" class="special-button">
         <a href="/"><input type="button" value="Back" class="special-button"></a> 

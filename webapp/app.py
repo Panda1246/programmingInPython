@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, redirect,  abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from model import Abalone
-
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///snails.db' 
 db = SQLAlchemy(app)
@@ -17,12 +14,17 @@ class Abalone(db.Model):
     diameter = db.mapped_column(db.Float, nullable=False)
     rings = db.mapped_column(db.Integer, nullable=False)
 
-
+ 
 def validate_abalon(sex, length, diameter, rings):
     if sex not in ['M', 'F', 'I'] or float(length) < 0 or float(diameter) < 0 or float(rings) < 0:
         return False
     return True
 
+def validate_abalon_json(sex, length, diameter, rings):
+    if validate_abalon(sex=sex, length=length, diameter=diameter, rings=rings) and isinstance(rings, int):
+        return True
+    else:
+        return False
 
 with app.app_context():
     db.create_all()
@@ -52,6 +54,7 @@ def add():
             atributes[i] = value_of_arg
 
         if not validate_abalon(**atributes):
+            print('not good')
             abort(400)
         else:
             abalone = Abalone(sex=request.form['sex'], length=request.form['length'], 
@@ -100,7 +103,7 @@ def add_new_data():
         length = form['length']
         diameter = form['diameter']
         rings = form['rings']
-        if validate_abalon(sex, length, diameter, rings):
+        if validate_abalon_json(sex, length, diameter, rings):
             abalon = Abalone(sex=sex, length=length, diameter=diameter, rings=rings)
             db.session.add(abalon)
             db.session.commit()
@@ -112,7 +115,7 @@ def add_new_data():
         else:
             return jsonify({'message': 'Invalid data was provided'}), 400
     except Exception as e:
-        return jsonify({'messege': ''}), 400
+        return jsonify({'messege': 'Invalid data was provided'}), 400
 
 
 @app.route('/api/data/<int:id>', methods=['DELETE'])
@@ -142,4 +145,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
